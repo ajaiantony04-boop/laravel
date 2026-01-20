@@ -1,0 +1,6 @@
+
+
+
+{{$student['user']}}
+
+{{ $user->email }}
