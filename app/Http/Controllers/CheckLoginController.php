@@ -2,27 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\StudentLogin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
+
 
 class CheckLoginController extends Controller
 {
-    public function checkLogin(Request $request)
-    {
-        $email = $request->input('email');
-        $pass = $request->input('pass');
+   public function checkLogin(Request $request)
+{
+    // 1️⃣ Validate input
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string',
+    ]);
 
-        // Find user by email
-        $user = StudentLogin::where('email', $email)->first();
+    // 2️⃣ Retrieve user by email
+    $user = \App\Models\User::where('email', $request->email)->first();
 
-        // Check if user exists and password matches
-        if ($user && $pass=$user->password) {
-            // Login successful, redirect to dashboard or home
-            return redirect()->route('home');
-        } else {
-            // Login failed, redirect back with error
-            return redirect()->back()->with('error', 'Invalid email or password');
-        }
+    if (!$user) {
+        // No user found
+        return back()->withErrors(['email' => 'User not found.']);
     }
+
+    // 3️⃣ Check password manually
+    if (!Hash::check($request->password, $user->password)) {
+        return back()->withErrors(['password' => 'Incorrect password.']);
+    }
+
+    // 4️⃣ Optional: Check user role
+    if ($user->role !== 'admin') {
+        return back()->withErrors(['role' => 'You are not authorized to login.']);
+    }
+
+    // 5️⃣ Log in user
+    Auth::login($user); // Direct login
+    $request->session()->regenerate(); // prevent session fixation
+
+    // 6️⃣ Redirect to intended page or /home
+    return redirect()->intended('/home');
+}
+
 }

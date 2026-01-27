@@ -1,102 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<head>
-	<title>Login V1</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<link rel="icon" type="image/png" href="{{ asset('images/icons/favicon.ico') }}"/>
-
-	<link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('vendor/animate/animate.css') }}">
-	<link rel="stylesheet" href="{{ asset('vendor/css-hamburgers/hamburgers.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/util.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
 
-<!--===============================================================================================-->
+    <div class="w-full max-w-sm bg-white shadow-lg rounded-lg p-8">
+        <h1 class="text-2xl font-bold text-center mb-6">Login</h1>
 
-<body>
-	
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-           
-            <form action="/checklogin" method="post">
+        <!-- Display Errors -->
+        @if($errors->any())
+            <div class="mb-4 text-red-600">
+                <ul class="list-disc list-inside">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-				<div class="login100-pic js-tilt" data-tilt>
-					<img src="images/img-01.png" alt="IMG">
-				</div>
+        <form action="{{route('checklogin')}}" method="POST" class="space-y-4">
+            @csrf
 
-				<form class="login100-form validate-form">
-					<span class="login100-form-title">
-						Member Login
-					</span>
+            <div>
+                <label for="email" class="block text-gray-700">Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email"
+                       class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
 
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email" placeholder="Email">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-envelope" aria-hidden="true"></i>
-						</span>
-					</div>
+            <div>
+                <label for="password" class="block text-gray-700">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter your password"
+                       class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
 
-					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-lock" aria-hidden="true"></i>
-						</span>
-					</div>
-					
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							Login
-						</button>
-					</div>
-
-					<div class="text-center p-t-12">
-						<span class="txt1">
-							Forgot
-						</span>
-						<a class="txt2" href="#">
-							Username / Password?
-						</a>
-					</div>
-
-					<div class="text-center p-t-136">
-						<a class="txt2" href="#">
-							Create your Account
-							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-						</a>
-					</div>
-                    @csrf
-				</form>
-        
-			</div>
-		</div>
-	</div>
-	
-	
-
-	
-<<script src="{{ asset('vendor/jquery/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/popper.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
-<script src="{{ asset('vendor/tilt/tilt.jquery.min.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>
-
-	<script >
-		$('.js-tilt').tilt({
-			scale: 1.1
-		})
-	</script>
-<!--===============================================================================================-->
-
+            <button type="submit"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">
+                Login
+            </button>
+        </form>
+    </div>
 
 </body>
 </html>
+<style>
+body {
+    background: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+.login-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 350px;
+}
+.login-card h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.login-card input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.login-card button {
+    width: 100%;
+    padding: 10px;
+    background: #1e40af;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.login-card button:hover {
+    background: #2563eb;
+}
+</style>
